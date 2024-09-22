@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Bar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #searchBtn {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #searchBtn:focus {
+            border-color: #0056b3;
+        }
+
+        #searchBtn::placeholder {
+            color: #999;
+        }
+
+        div {
+            margin-top: 10px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        p {
+            margin: 0;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        p:hover {
+            background-color: #f1f1f1;
+        }
+
+        p:last-child {
+            border-bottom: none;  
+        }
+    </style>
+</head>
+
+
+<body>
+    <input type="text" placeholder="Search" id="searchBtn">
+</body>
+
+
+<script>
+
+    let searchBtn = document.getElementById("searchBtn");
+    let div = document.createElement("div");
+
+    // let timeOutId = null;
+
+    searchBtn.addEventListener("keyup", searchFun);
+
+    // searchBtn.addEventListener('keyup', () => {
+    //     if (searchBtn.value.trim() == "")
+    //         div.innerHTML = ""
+    //     else {
+    //         if (timeOutId)
+    //             clearTimeout(timeOutId);
+    //         timeOutId = setTimeout(() => {
+    //             searchFun();
+    //         },500);
+    //     }
+    // });
+
+    async function searchFun() {
+        let value = searchBtn.value;
+        // console.log(value);
+        
+        div.innerHTML = "";
+        let search = await fetch(`https://dummyjson.com/products/search?q=${value}`);
+        let res = await search.json();
+        //console.log(res);
+        res.products.forEach((e) => {
+            let p = document.createElement("p");
+            p.innerText = e.title;
+            div.appendChild(p);
+        })
+
+    }
+    
+    document.body.appendChild(div);
+
+</script>
+
+</html>
